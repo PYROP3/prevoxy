@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler,HTTPServer
 import logging
 import requests
+import os
 
 logging.basicConfig()
 
@@ -38,7 +39,8 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.send_error(404, 'error trying to proxy: {}'.format(str(e)))
 
 if __name__ == '__main__':
-    server_address = ('0.0.0.0', 80)
+    port = int(os.getenv("PORT") or 80)
+    server_address = ('0.0.0.0', port)
     httpd = HTTPServer(server_address, ProxyHTTPRequestHandler)
     print('http server is running')
     httpd.serve_forever()
